@@ -1,6 +1,22 @@
 # node-red-contrib-pdex
 
 
+### PDEx in Node-Red
+
+1. Node-Red node 
+
+![](docs/images/fig1.png?raw=true)
+
+2. Bypassing message payload from input
+
+![](docs/images/fig2.png?raw=true)
+
+3. Bypassing String as message
+
+![](docs/images/fig3.png?raw=true)
+
+
+
 ### Installation
 
 1. Clone the repository
@@ -87,12 +103,3 @@ npm install /to/the/directory/elias-node-red-contrib-pdex
 ]
 ```
 
-
-6. Figure 1
-![](docs/images/fig1.png?raw=true)
-
-7. Figure 2 : Bypassing message payload from input
-![](docs/images/fig2.png?raw=true)
-
-8. Figure 3 : Bypassing String as message
-![](docs/images/fig3.png?raw=true)
