@@ -1,0 +1,33 @@
+{
+  "name": "elias-node-red-contrib-pdex",
+  "version": "0.0.1",
+  "description": "A Node-RED node to send/receive messages PDExchange platform",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/plathome/elias-node-red-contrib-pdex.git"
+  },
+  "keywords": [
+    "node-red",
+    "PDExchange",
+    "pdex",
+    "pdexchange"
+  ],
+  "author": "Elias Hasnat",
+  "license": "PlatHome Inc",
+  "bugs": {
+    "url": "https://github.com/plathome/elias-node-red-contrib-pdex/issues"
+  },
+  "homepage": "https://github.com/plathome/elias-node-red-contrib-pdex",
+  "dependencies": {
+    "restler": "^3.4.0"
+  },
+  "node-red": {
+    "nodes": {
+      "send message": "1-pdex-send.js"
+    }
+  }
+}

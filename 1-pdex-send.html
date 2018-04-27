@@ -1,0 +1,152 @@
+<script type="text/javascript">
+    RED.nodes.registerType('send message',{
+        category: 'pdex',
+        color: '#dddd88',
+        defaults: {
+            name :  {value: "send message"},
+            pdexurl : {value: "http://localhost:8090"},
+            accesskey : {value: ""},
+            deviceid : {value: ""},
+            secretkey : {value: ""},
+            appid: {value: ""},
+            apptoken: {value: ""},
+            payload: {value: "", validate: RED.validators.typedInput("payloadType")},
+            payloadType: {value: ""}
+        },
+        inputs:1,
+        outputs:0,
+        icon: "pdex.png",
+        align: "right",
+        label: function() {
+            return this.name||"send message";
+        },
+
+        oneditprepare: function() {
+
+            if (this.topicType == null) {
+                if (this.topic == "") {
+                    this.topicType = "str";
+                } else {
+                    this.topicType = "msg";
+                }
+            } else if (this.topicType === 'string' || this.topicType === 'none') {
+                this.topicType = "str";
+            }
+
+            $("#node-input-pdexurl").val(this.pdexurl);
+            $("#node-input-accesskey").val(this.accesskey);
+            $("#node-input-deviceid").val(this.deviceid);
+            $("#node-input-secretkey").val(this.secretkey);
+            $("#node-input-appid").val(this.appid);
+            $("#node-input-apptoken").val(this.apptoken);
+
+            if (this.payloadType == null) {
+                if (this.payload == "") {
+                    this.payloadType = "str";
+                } else {
+                    this.payloadType = "msg";
+                }
+            } else if (this.payloadType === 'string' || this.payloadType === 'none') {
+                this.payloadType = "str";
+            }
+            $("#node-input-payloadType").val(this.payloadType);
+
+            $("#node-input-payload").typedInput({
+                default: 'msg',
+                typeField: $("#node-input-payloadType"),
+                types:['msg','str']
+            });
+            $("#node-input-payload").typedInput('type',this.payloadType);
+        },
+        button: {
+            enabled: function() {
+                return !this.changed
+            },
+            onclick: function() {
+                if (this.changed) {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.undeployedChanges")}),"warning");
+                }
+                if ((this.payloadType=='str' && !this.payload) || this.payloadType=='msg' || this.aliasType=='msg') {
+                    return RED.notify(RED._("notification.warning", {message:RED._("notification.warnings.invalidMessage")}),"warning");
+                }
+
+                var label = (this.name||this.payload);
+                var node = this;
+                $.ajax({
+                    url: "inject/"+this.id,
+                    type:"POST",
+                    success: function(resp, textStatus, xhr) {
+                        RED.notify(node._("inject.success",{label:label}),"success");
+                    },
+                    error: function(jqXHR,textStatus,errorThrown) {
+                        if (jqXHR.status == 404) {
+                            RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.not-deployed")}),"error");
+                        } else if (jqXHR.status == 500) {
+                            RED.notify(node._("common.notification.error",{message:node._("inject.errors.failed")}),"error");
+                        } else if (jqXHR.status == 0) {
+                            RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.no-response")}),"error");
+                        } else {
+                            RED.notify(node._("common.notification.error",{message:node._("common.notification.errors.unexpected",{status:jqXHR.status,message:textStatus})}),"error");
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="send message">
+
+    <div class="form-row">
+        <label for="node-input-pdexurl"><i class="icon-cog"></i> PDEx URL</label>
+        <input type="text" id="node-input-pdexurl" placeholder="PDEx URL">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-accesskey"><i class="icon-cog"></i> Access Key</label>
+        <input type="text" id="node-input-accesskey" placeholder="Access Key">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-deviceid"><i class="icon-cog"></i> Device Id</label>
+        <input type="text" id="node-input-deviceid" placeholder="xxx.xxxxxx.xxxxx">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-secretkey"><i class="icon-cog"></i> Secret Key</label>
+        <input type="text" id="node-input-secretkey" placeholder="Secret Key">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-appid"><i class="icon-cog"></i> App Id</label>
+        <input type="text" id="node-input-appid" placeholder="App Id">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-apptoken"><i class="icon-cog"></i> App Token</label>
+        <input type="text" id="node-input-apptoken" placeholder="App Token">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-payload"><i class="icon-cog"></i> Payload</label>
+        <input type="text" id="node-input-payload" placeholder="">
+        <input type="hidden" id="node-input-payloadType">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="send message">
+    <p>Send Message.</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt class="optional">payload<span class="property-type">string</span></dt>
+        <dd>Send Message.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>Send Message.</p>
+</script>

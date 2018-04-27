@@ -1,2 +1,8 @@
-# elias-node-red-contrib-pdex
-pdexchange message send plugin for Node-Red
+# node-red-contrib-pdex
+
+
+### Installation
+
+1. cd to node-red home directory
+
+2. 
