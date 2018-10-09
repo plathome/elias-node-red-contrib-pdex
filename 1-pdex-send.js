@@ -40,11 +40,11 @@ module.exports = function(RED) {
 							'Authorization': 'Bearer ' + data.digest,
 							'Content-Type': 'application/json'
 					 },
-						data: JSON.stringify(payload),
+						data: JSON.stringify(payloadObject),
 					}).on('complete', function(data, response) {
 						if (response.statusCode == 201) {
 							var msg = {
-								payload : jsonparse(payload),
+								payload : jsonparse(payloadObject),
 								transaction : jsonparse(data)
 							};
 							node.send(msg);
