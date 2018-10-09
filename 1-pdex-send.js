@@ -33,7 +33,7 @@ module.exports = function(RED) {
 				data: { key: secretkey, message: deviceid, eq_stripped: true },
 			}).on('complete', function(data, response) {
 				if (response.statusCode == 200) {
-					var payload = { msg : payloadObject };
+					var payload = { payloadObject };
 					rest.post( pdexurl + deviceMsgSendUri + '/' + deviceid + '/message', {
 						headers: {
 							'Authorization': 'Bearer ' + data.digest,
