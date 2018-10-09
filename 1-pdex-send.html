@@ -24,13 +24,6 @@
         oneditprepare: function() {
 
             if (this.topicType == null) {
-                /*
-                if (this.topic == "") {
-                    this.topicType = "str";
-                } else {
-                    this.topicType = "msg";
-                }
-                */
                 this.topicType = "";
             } else if (this.topicType === 'string' || this.topicType === 'none') {
                 this.topicType = "str";
@@ -44,13 +37,6 @@
             $("#node-input-apptoken").val(this.apptoken);
 
             if (this.payloadType == null) {
-                /*
-                if (this.payload == "") {
-                    this.payloadType = "str";
-                } else {
-                    this.payloadType = "msg";
-                }
-                */
                 this.payloadType = "";
             } else if (this.payloadType === 'string' || this.payloadType === 'none') {
                 this.payloadType = "str";
