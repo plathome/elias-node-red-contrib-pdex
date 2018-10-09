@@ -28,7 +28,7 @@ module.exports = function(RED) {
 	    	var apptoken = config.apptoken;
 
 	    	//var payloadObject = config.payloadType=='str'?config.payload:(msg[config.payload]||'');
-	    	var payloadObject = config.payload;
+	    	var payloadObject = msg[config.payload];
 
 			rest.post(pdexurl + hmacUri , {
 				data: { key: secretkey, message: deviceid, eq_stripped: true },
