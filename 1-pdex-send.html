@@ -24,11 +24,14 @@
         oneditprepare: function() {
 
             if (this.topicType == null) {
+                /*
                 if (this.topic == "") {
                     this.topicType = "str";
                 } else {
                     this.topicType = "msg";
                 }
+                */
+                this.topicType = "";
             } else if (this.topicType === 'string' || this.topicType === 'none') {
                 this.topicType = "str";
             }
