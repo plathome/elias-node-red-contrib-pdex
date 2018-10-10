@@ -31,9 +31,9 @@ module.exports = function(RED) {
 
 			rest.post(pdexurl + hmacUri , {
 				data: { key: secretkey, message: deviceid, eq_stripped: true },
-			}).on('complete', function(err, data, response) {
-				if (err) {
-					node.error(err);
+			}).on('complete', function(data, response) {
+				if (response == null) {
+					node.error(null);
 					node.status({fill:"red", shape:"ring", text:"pdexchange send failed"});
 			 	} else {
 					if (response.statusCode == 200) {
@@ -44,9 +44,9 @@ module.exports = function(RED) {
 								'Content-Type': 'application/json'
 						 },
 							data: JSON.stringify(payloadObject),
-						}).on('complete', function(error, data, response) {
-							if (error) {
-								node.error(error);
+						}).on('complete', function(data, response) {
+							if (response == null) {
+								node.error(null);
 								node.status({fill:"yellow", shape:"ring", text:"pdexchange send failed c"});
 							} else {
 								if (response.statusCode == 201) {
