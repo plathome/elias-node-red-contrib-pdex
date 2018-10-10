@@ -30,6 +30,13 @@ module.exports = function(RED) {
 
 	    	var payloadObject = msg.payload;
 
+			rest.post(pdexurl + hmacUri , {
+				data: { key: secretkey, message: deviceid, eq_stripped: true },
+			}).on('complete', function(data, response) {
+				node.status({fill:"red", shape:"ring", text:"pdexchange hmac create failed " + response});
+			}
+
+
 	    	/*
 			rest.post(pdexurl + hmacUri , {
 				data: { key: secretkey, message: deviceid, eq_stripped: true },
@@ -65,6 +72,7 @@ module.exports = function(RED) {
 			 	}
 			});
 			*/
+			/*
             options_hmac = {
                 url: pdexurl + hmacUri ,
                 headers: {'Content-Type': 'application/json'},
@@ -80,6 +88,7 @@ module.exports = function(RED) {
                     node.status({});
                 }
             });
+            */
         });
     }
     RED.nodes.registerType("PD Exchange",PdexRESTPublishNode);
