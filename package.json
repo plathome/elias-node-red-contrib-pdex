@@ -24,7 +24,7 @@
   "homepage": "https://github.com/plathome/elias-node-red-contrib-pdex",
   "dependencies": {
     "restler": "^3.4.0",
-    "request": "~2.72.0",
+    "request": "~2.72.0"
   },
   "node-red": {
     "nodes": {

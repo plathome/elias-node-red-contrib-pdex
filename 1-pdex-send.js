@@ -86,13 +86,36 @@ module.exports = function(RED) {
 				var code = (response && response.statusCode);
 
 				if (code == 200) {
-                    node.status({fill:"red", shape:"ring", text:"pdex hmac created " + body.digest});
+					var options_2 = {
+					  uri: pdexurl + deviceMsgSendUri + '/' + deviceid + '/message',
+					  headers: {
+					    "Content-type": "application/json",
+						'Authorization': 'Bearer ' + body.digest
+					  },
+					  json: { payloadObject }
+					};
+
+					request.post(options_2, function(error, response, body){
+						if (error) {
+		                    node.error(error);
+		                    node.status({fill:"red", shape:"ring", text:"pdex data send failed"});
+							return console.log(error);
+						}
+
+						var code = (response && response.statusCode);
+
+						if (code == 201) {
+							var msg = {
+								payload : jsonparse(payloadObject),
+								transaction : jsonparse(body)
+							};
+							node.send(msg);
+							node.status({});
+						}
+					});
 				}
 			});
-
-
         });
-
     }
     RED.nodes.registerType("PD Exchange",PdexRESTPublishNode);
 }
