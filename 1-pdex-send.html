@@ -1,9 +1,9 @@
 <script type="text/javascript">
-    RED.nodes.registerType('send message',{
+    RED.nodes.registerType('PDEx SEND',{
         category: 'pdex',
         color: '#dddd88',
         defaults: {
-            name :  {value: "send message"},
+            name :  {value: "To PDEx"},
             pdexurl : {value: "http://localhost:8090"},
             accesskey : {value: ""},
             deviceid : {value: ""},
@@ -130,11 +130,11 @@
 </script>
 
 <script type="text/x-red" data-help-name="send message">
-    <p>Send Message.</p>
+    <p>Send Message to PDEx.</p>
     <h3>Inputs</h3>
     <dl class="message-properties">
         <dt class="optional">payload<span class="property-type">string</span></dt>
-        <dd>Send Message.</dd>
+        <dd>Send Message to PDExchange.</dd>
     </dl>
     <h3>Details</h3>
     <p>Send Message.</p>
