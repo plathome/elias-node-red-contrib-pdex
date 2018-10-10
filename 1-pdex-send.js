@@ -72,7 +72,7 @@ module.exports = function(RED) {
                 json: true
             };
 
-            request.post(options, function(err, res, body) {
+            request.post(options_hmac, function(err, res, body) {
                 if (err) {
                     node.error(err);
                     node.status({fill:"red", shape:"ring", text:"pdexchange hmac create failed"});
