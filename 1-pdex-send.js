@@ -47,7 +47,7 @@ module.exports = function(RED) {
 						}).on('complete', function(error, data, response) {
 							if (error) {
 								node.error(error);
-								node.status({fill:"red", shape:"ring", text:"pdexchange send failed"});
+								node.status({fill:"yellow", shape:"ring", text:"pdexchange send failed c"});
 							} else {
 								if (response.statusCode == 201) {
 									var msg = {
