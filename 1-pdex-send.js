@@ -33,62 +33,25 @@ module.exports = function(RED) {
 			rest.post(pdexurl + hmacUri , {
 				data: { key: secretkey, message: deviceid, eq_stripped: true },
 			}).on('complete', function(data, response) {
-				node.status({fill:"red", shape:"ring", text:"pdexchange hmac create failed " + response});
-			}
-
-
-	    	/*
-			rest.post(pdexurl + hmacUri , {
-				data: { key: secretkey, message: deviceid, eq_stripped: true },
-			}).on('complete', function(data, response) {
-				if (response == null) {
-					node.error(null);
-					node.status({fill:"red", shape:"ring", text:"pdexchange send failed " + data});
-			 	} else {
-					if (response.statusCode == 200) {
-						var payload = { payloadObject };
-						rest.post( pdexurl + deviceMsgSendUri + '/' + deviceid + '/message', {
-							headers: {
-								'Authorization': 'Bearer ' + data.digest,
-								'Content-Type': 'application/json'
-						 },
-							data: JSON.stringify(payloadObject),
-						}).on('complete', function(data, response) {
-							if (response == null) {
-								node.error(null);
-								node.status({fill:"yellow", shape:"ring", text:"pdexchange send failed c"});
-							} else {
-								if (response.statusCode == 201) {
-									var msg = {
-										payload : jsonparse(payloadObject),
-										transaction : jsonparse(data)
-									};
-									node.send(msg);
-									node.status({});
-								}								
-							}
-						});
-				 	}
+				if (response.statusCode == 200) {
+					var payload = { payloadObject };
+					rest.post( pdexurl + deviceMsgSendUri + '/' + deviceid + '/message', {
+						headers: {
+							'Authorization': 'Bearer ' + data.digest,
+							'Content-Type': 'application/json'
+					 	},
+						data: JSON.stringify(payloadObject),
+					}).on('complete', function(data, response) {
+						if (response.statusCode == 201) {
+							var msg = {
+								payload : jsonparse(payloadObject),
+								transaction : jsonparse(data)
+							};
+							node.send(msg);
+						}								
+					});
 			 	}
 			});
-			*/
-			/*
-            options_hmac = {
-                url: pdexurl + hmacUri ,
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ key: secretkey, message: deviceid, eq_stripped: true }),
-                json: true
-            };
-
-            request.post(options_hmac, function(err, res, body) {
-                if (err) {
-                    node.error(err);
-                    node.status({fill:"red", shape:"ring", text:"pdexchange hmac create failed"});
-                } else {
-                    node.status({});
-                }
-            });
-            */
         });
     }
     RED.nodes.registerType("PD Exchange",PdexRESTPublishNode);
