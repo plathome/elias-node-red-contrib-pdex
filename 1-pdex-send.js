@@ -12,6 +12,7 @@ module.exports = function(RED) {
 
     function PdexRESTPublishNode(config) {
     	var rest = require('restler');
+    	var request = require('request');
 
     	var hmacUri = '/api/v1/utils/hmac';
     	var deviceMsgSendUri = '/api/v1/devices/';
@@ -29,6 +30,7 @@ module.exports = function(RED) {
 
 	    	var payloadObject = msg.payload;
 
+	    	/*
 			rest.post(pdexurl + hmacUri , {
 				data: { key: secretkey, message: deviceid, eq_stripped: true },
 			}).on('complete', function(data, response) {
@@ -62,8 +64,23 @@ module.exports = function(RED) {
 				 	}
 			 	}
 			});
-        });
+			*/
+            options_hmac = {
+                url: pdexurl + hmacUri ,
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ key: secretkey, message: deviceid, eq_stripped: true }),
+                json: true
+            };
 
+            request.post(options, function(err, res, body) {
+                if (err) {
+                    node.error(err);
+                    node.status({fill:"red", shape:"ring", text:"pdexchange hmac create failed"});
+                } else {
+                    node.status({});
+                }
+            });
+        });
     }
     RED.nodes.registerType("PD Exchange",PdexRESTPublishNode);
 }
