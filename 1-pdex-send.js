@@ -54,5 +54,5 @@ module.exports = function(RED) {
         });
 
     }
-    RED.nodes.registerType("send message",PdexRESTPublishNode);
+    RED.nodes.registerType("PD Exchange",PdexRESTPublishNode);
 }
