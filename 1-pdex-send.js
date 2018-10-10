@@ -31,24 +31,35 @@ module.exports = function(RED) {
 
 			rest.post(pdexurl + hmacUri , {
 				data: { key: secretkey, message: deviceid, eq_stripped: true },
-			}).on('complete', function(data, response) {
-				if (response.statusCode == 200) {
-					var payload = { payloadObject };
-					rest.post( pdexurl + deviceMsgSendUri + '/' + deviceid + '/message', {
-						headers: {
-							'Authorization': 'Bearer ' + data.digest,
-							'Content-Type': 'application/json'
-					 },
-						data: JSON.stringify(payloadObject),
-					}).on('complete', function(data, response) {
-						if (response.statusCode == 201) {
-							var msg = {
-								payload : jsonparse(payloadObject),
-								transaction : jsonparse(data)
-							};
-							node.send(msg);
-						}
-					});
+			}).on('complete', function(err, data, response) {
+				if (err) {
+					node.error(err);
+					node.status({fill:"red", shape:"ring", text:"pdexchange send failed"});
+			 	} else {
+					if (response.statusCode == 200) {
+						var payload = { payloadObject };
+						rest.post( pdexurl + deviceMsgSendUri + '/' + deviceid + '/message', {
+							headers: {
+								'Authorization': 'Bearer ' + data.digest,
+								'Content-Type': 'application/json'
+						 },
+							data: JSON.stringify(payloadObject),
+						}).on('complete', function(error, data, response) {
+							if (error) {
+								node.error(error);
+								node.status({fill:"red", shape:"ring", text:"pdexchange send failed"});
+							} else {
+								if (response.statusCode == 201) {
+									var msg = {
+										payload : jsonparse(payloadObject),
+										transaction : jsonparse(data)
+									};
+									node.send(msg);
+									node.status({});
+								}								
+							}
+						});
+				 	}
 			 	}
 			});
         });
