@@ -78,7 +78,7 @@ module.exports = function(RED) {
 
 			request.post(options_hmac, function(error, response, body){
 				if (error) {
-                    node.error(err);
+                    node.error(error);
                     node.status({fill:"red", shape:"ring", text:"pdex hmac create failed"});
 					return console.log(error);
 				}
